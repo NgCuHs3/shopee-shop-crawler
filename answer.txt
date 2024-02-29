@@ -1,0 +1,32 @@
+Lợi kỳ vọng trên mỗi sản phẩm khi không có bảo hiểm R = 10 000 - 1 /50 * 420 000 = 1600
+Lợi kỳ vọng trên mỗi sản phẩm khi có bảo hiểm R = 10 000 - 2 000 =  8 000
+Vậy nên mua bảo hiểm
+
+
+
+SELECT  "Phòng Ban", "Nhân Viên", "Lương"
+FROM (
+    SELECT 
+        phong_ban_table.name AS "Phòng Ban", 
+        nhan_vien_table.name AS "Nhân Viên", 
+        nhan_vien_table.salary as "Lương",
+        DENSE_RANK() OVER (PARTITION BY nhan_vien_table.departmentId ORDER BY nhan_vien_table.salary DESC) AS rank
+    FROM nhan_vien_table
+    JOIN phong_ban_table ON nhan_vien_table.departmentId = phong_ban_table.id
+)
+WHERE rank <= 3;
+
+
+import random
+
+num_points  = 1000000
+inside_circle_points = 0
+
+for _ in range(num_points):
+    x = random.uniform(0,1)
+    y = random.uniform(0,1)
+    if (x**2 + y**2) <= 1:
+        inside_circle_points+=1
+
+pi = 4 * inside_circle_points / num_points
+print("estimate pi:",pi)     
